@@ -74,6 +74,12 @@ vim.filetype.add({
 	},
 })
 
+vim.filetype.add({
+	pattern = {
+		[".*%.swagger%.js"] = "yaml",
+	},
+})
+
 -- Enabling Emmet shortcuts in .templ files like HTML
 vim.g.user_emmet_settings = {
 	templ = {
@@ -187,6 +193,26 @@ require("lazy").setup({
 		-- use opts = {} for passing setup options
 		-- this is equivalent to setup({}) function
 	},
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+			-- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
+		},
+		lazy = false, -- neo-tree will lazily load itself
+		---@module "neo-tree"
+		---@type neotree.Config?
+		opts = {
+			-- fill any relevant options here
+		},
+
+		vim.keymap.set("n", "<leader>nt", function()
+			vim.cmd("Neotree float")
+		end, { desc = "[T]oggle neotree window" }),
+	},
 
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
@@ -255,6 +281,7 @@ require("lazy").setup({
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+				{ "<leader>n", group = "[N]eotree" },
 			},
 		},
 	},
@@ -315,13 +342,13 @@ require("lazy").setup({
 			require("telescope").setup({
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
-				--
-				-- defaults = {
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
-				-- pickers = {}
+				defaults = {
+					-- mappings = {
+					--   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+					-- },
+					file_ignore_patterns = { "node_modules" },
+					hidden = true,
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -557,6 +584,9 @@ require("lazy").setup({
 				clangd = {},
 				solidity_ls_nomicfoundation = {},
 				gopls = {},
+				ts_ls = {},
+				yamlls = {},
+				omnisharp = {},
 				emmet_language_server = {
 					filetypes = {
 						"html",
@@ -571,10 +601,6 @@ require("lazy").setup({
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
 				--    https://github.com/pmizio/typescript-tools.nvim
-				--
-				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				-- ts_ls = {},
-				--
 
 				lua_ls = {
 					-- cmd = { ... },
@@ -663,6 +689,10 @@ require("lazy").setup({
 				cpp = { "clang-format" },
 				solidity = { "forge_fmt" },
 				html = { "prettier" },
+				javascript = { "eslint_d", "prettier" },
+				typescipt = { "eslint_d", "prettier" },
+				json = { "prettier" },
+				yaml = { "prettier" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
