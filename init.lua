@@ -4,7 +4,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -67,6 +67,26 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Setup custom filetypes
+vim.filetype.add({
+	extension = {
+		templ = "templ",
+	},
+})
+
+vim.filetype.add({
+	pattern = {
+		[".*%.swagger%.js"] = "yaml",
+	},
+})
+
+-- Enabling Emmet shortcuts in .templ files like HTML
+vim.g.user_emmet_settings = {
+	templ = {
+		extends = "html",
+	},
+}
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -112,13 +132,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank()
 	end,
-})
-
--- File types
-vim.filetype.add({
-	pattern = {
-		[".*%.swagger%.js"] = "yaml",
-	},
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -329,7 +342,6 @@ require("lazy").setup({
 			require("telescope").setup({
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
-				--
 				defaults = {
 					-- mappings = {
 					--   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
@@ -337,7 +349,6 @@ require("lazy").setup({
 					file_ignore_patterns = { "node_modules" },
 					hidden = true,
 				},
-				-- pickers = {}
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -570,21 +581,26 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				clangd = {},
 				solidity_ls_nomicfoundation = {},
+				gopls = {},
 				ts_ls = {},
 				yamlls = {},
 				omnisharp = {},
-				-- gopls = {},
+				emmet_language_server = {
+					filetypes = {
+						"html",
+						"css",
+						"templ",
+					},
+				},
+				templ = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
 				--    https://github.com/pmizio/typescript-tools.nvim
-				--
-				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				--
 
 				lua_ls = {
 					-- cmd = { ... },
@@ -670,15 +686,25 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- cpp = { "clang-format" },
-				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
-				--
-				-- You can use 'stop_after_first' to run the first available formatter from the list
+				cpp = { "clang-format" },
+				solidity = { "forge_fmt" },
+				html = { "prettier" },
 				javascript = { "eslint_d", "prettier" },
 				typescipt = { "eslint_d", "prettier" },
 				json = { "prettier" },
 				yaml = { "prettier" },
+				-- Conform can also run multiple formatters sequentially
+				-- python = { "isort", "black" },
+				--
+				-- You can use 'stop_after_first' to run the first available formatter from the list
+				-- javascript = { "prettierd", "prettier", stop_after_first = true },
+			},
+			formatters = {
+				forge_fmt = {
+					command = "forge",
+					args = { "fmt", "--raw" },
+					stdin = false,
+				},
 			},
 		},
 	},
