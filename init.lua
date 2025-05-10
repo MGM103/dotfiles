@@ -194,6 +194,80 @@ require("lazy").setup({
 		-- this is equivalent to setup({}) function
 	},
 	{
+		"theprimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("harpoon"):setup()
+		end,
+		keys = function()
+			local keys = {
+				{
+					"<leader>H",
+					function()
+						require("harpoon"):list():add()
+					end,
+					desc = "Harpoon File",
+				},
+				{
+					"<leader>h",
+					function()
+						local harpoon = require("harpoon")
+						harpoon.ui:toggle_quick_menu(harpoon:list())
+					end,
+					desc = "Harpoon Quick Menu",
+				},
+			}
+
+			for i = 1, 5 do
+				table.insert(keys, {
+					"<leader>" .. i,
+					function()
+						require("harpoon"):list():select(i)
+					end,
+					desc = "Harpoon to File " .. i,
+				})
+			end
+			return keys
+		end,
+	},
+	{
+		"andymass/vim-matchup",
+		setup = function()
+			vim.g.matchup_matchparen_offscreen = { method = "popup" }
+		end,
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-ts-autotag").setup({
+				opts = {
+					-- Defaults
+					enable_close = true, -- Auto close tags
+					enable_rename = true, -- Auto rename pairs of tags
+					enable_close_on_slash = false, -- Auto close on trailing </
+					aliases = {
+						-- Treat 'templ' files as if they were 'html'
+						templ = "html",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"sQVe/sort.nvim",
+		keys = {
+			{ "<leader>a", "<Esc><Cmd>Sort<CR>", mode = "v", desc = "Sort lines/items alphabetically" },
+		},
+		config = function()
+			require("sort").setup({
+				-- (Optional) configuration can go here. Defaults are usually fine.
+			})
+		end,
+	},
+	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		dependencies = {
@@ -209,9 +283,9 @@ require("lazy").setup({
 			-- fill any relevant options here
 		},
 
-		vim.keymap.set("n", "<leader>nt", function()
+		vim.keymap.set("n", "<leader>n", function()
 			vim.cmd("Neotree float")
-		end, { desc = "[T]oggle neotree window" }),
+		end, { desc = "[N]eotree window" }),
 	},
 
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -280,8 +354,6 @@ require("lazy").setup({
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
-				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
-				{ "<leader>n", group = "[N]eotree" },
 			},
 		},
 	},
@@ -917,6 +989,7 @@ require("lazy").setup({
 				additional_vim_regex_highlighting = { "ruby" },
 			},
 			indent = { enable = true, disable = { "ruby" } },
+			matchup = { enable = true },
 		},
 		-- There are additional nvim-treesitter modules that you can use to interact
 		-- with nvim-treesitter. You should go explore a few and see what interests you:
