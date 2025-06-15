@@ -19,14 +19,14 @@ config.cursor_blink_rate = 500
 -- config.window_decorations = "NONE | RESIZE"
 
 -- WSL
-config.default_domain = "WSL:Ubuntu"
-config.wsl_domains = {
-	{
-		name = "WSL:Ubuntu",
-		distribution = "Ubuntu",
-		default_cwd = "~/projects",
-	},
-}
+--config.default_domain = "WSL:Ubuntu"
+--config.wsl_domains = {
+--	{
+--		name = "WSL:Ubuntu",
+--		distribution = "Ubuntu",
+--		default_cwd = "~/projects",
+--	},
+--}
 
 -- KEY RE-MAPPINGS
 local act = wezterm.action
