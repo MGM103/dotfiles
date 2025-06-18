@@ -74,6 +74,7 @@ vim.opt.scrolloff = 10
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = true -- Enable folding by default
+vim.opt.foldlevelstart = 99
 
 -- Setup custom filetypes
 vim.filetype.add({
