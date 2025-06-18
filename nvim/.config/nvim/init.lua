@@ -70,6 +70,13 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Setup JSON folding using Treesitter
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = true -- Enable folding by default
+vim.opt.foldlevel = 99 -- Don't auto-close folds on open
+vim.opt.foldlevelstart = 99 -- Start with all folds open
+
 -- Setup custom filetypes
 vim.filetype.add({
 	extension = {
