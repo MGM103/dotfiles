@@ -1,19 +1,14 @@
 #!/usr/bin/env bash
 
-# Kill existing polybar instances
+# Terminate already running bar instances
+# If all your bars have ipc enabled, you can use 
 polybar-msg cmd quit
-while pgrep -u "$UID" -x polybar >/dev/null; do sleep 0.5; done
+# Otherwise you can use the nuclear option:
+# killall -q polybar
 
-# Preferred monitor
-if polybar --list-monitors | grep -q "^HDMI-A-0"; then
-  MONITOR="HDMI-A-0"
-else
-  # Fallback: primary monitor
-  MONITOR=$(polybar --list-monitors | grep primary | cut -d: -f1)
+# Launch bar1 and bar2
+echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
+polybar primary 2>&1 | tee -a /tmp/polybar1.log & disown
+polybar secondary 2>&1 | tee -a /tmp/polybar1.log & disown
 
-  # Fallback to first monitor if no primary
-  [ -z "$MONITOR" ] && MONITOR=$(polybar --list-monitors | head -n1 | cut -d: -f1)
-fi
-
-# Launch polybar
-env MONITOR=$MONITOR polybar --reload example &
+echo "Bars launched..."
