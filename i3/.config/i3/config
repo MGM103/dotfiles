@@ -27,7 +27,7 @@ for_window [class=".*"] border pixel 2
 default_border pixel 2
 title_align center
 gaps inner 8px
-gaps top 42px
+gaps top 36px
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -45,7 +45,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 
 # Rotate secondary screen to portrait
-exec_always --no-startup-id xrandr --output DisplayPort-2 --mode 1920x1080 --rotate left
+exec_always --no-startup-id xrandr --output DisplayPort-5 --mode 1920x1080 --rotate left
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -68,7 +68,8 @@ bindsym $mod+Return exec wezterm
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+# bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+d exec --no-startup-id $HOME/.config/rofi/launchers/type-2/launcher.sh
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -212,3 +213,5 @@ exec_always feh --no-fehbg --bg-fill $HOME/Documents/background-images/astronaut
 # Launch Compositor
 exec_always picom --config ~/.config/picom/picom.conf
 
+# For colour scheme
+exec --no-startup-id wal -i $HOME/Documents/background-images/astronaut-nord.png
