@@ -30,22 +30,22 @@ config.window_decorations = "NONE"
 
 -- KEY RE-MAPPINGS
 local act = wezterm.action
-config.keys = {
-	{
-		key = "c",
-		mods = "CTRL",
-		action = act({
-			CopyTo = "Clipboard",
-		}),
-	},
-	{
-		key = "v",
-		mods = "CTRL",
-		action = act({
-			PasteFrom = "Clipboard",
-		}),
-	},
-}
+-- config.keys = {
+-- 	{
+-- 		key = "c",
+-- 		mods = "CTRL",
+-- 		action = act({
+-- 			CopyTo = "Clipboard",
+-- 		}),
+-- 	},
+-- 	{
+-- 		key = "v",
+-- 		mods = "CTRL",
+-- 		action = act({
+-- 			PasteFrom = "Clipboard",
+-- 		}),
+-- 	},
+-- }
 
 -- MOUSE RE-MAPPINGS
 config.mouse_bindings = {
