@@ -6,7 +6,7 @@ if wezterm.config_builder then
 end
 
 -- Graphics
-config.front_end = "OpenGL"
+config.front_end = "WebGpu"
 config.max_fps = 144
 config.prefer_egl = true
 
@@ -16,7 +16,7 @@ config.line_height = 1.2
 config.default_cursor_style = "BlinkingBlock"
 config.animation_fps = 1
 config.cursor_blink_rate = 500
-config.window_decorations = "NONE | RESIZE"
+config.window_decorations = "NONE"
 
 -- WSL
 --config.default_domain = "WSL:Ubuntu"
