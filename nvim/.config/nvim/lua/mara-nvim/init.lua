@@ -1,0 +1,5 @@
+require("mara-nvim.keymaps")
+require("mara-nvim.options")
+require("mara-nvim.autocmds")
+require("mara-nvim.filetypes")
+require("mara-nvim.lazy-init")

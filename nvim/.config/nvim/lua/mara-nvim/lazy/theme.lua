@@ -1,0 +1,1 @@
+/home/mara/Development/Neovim-theme-switcher/theme.lua
