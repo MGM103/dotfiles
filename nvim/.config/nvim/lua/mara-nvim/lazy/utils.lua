@@ -33,6 +33,9 @@ return {
 	},
 	{
 		"sQVe/sort.nvim",
+		opts = {
+			mappings = false,
+		},
 		keys = {
 			{ "<leader>a", "<Esc><Cmd>Sort<CR>", mode = "v", desc = "Sort lines/items alphabetically" },
 		},

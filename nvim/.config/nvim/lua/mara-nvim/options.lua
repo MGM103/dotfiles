@@ -10,11 +10,12 @@ vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 -- Schedule the setting after `UiEnter` because it can increase startup-time.
-vim.schedule(function() vim.opt.clipboard = "unnamedplus" end)
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus"
+end)
 
 -- wrapped text will respect indent
 vim.opt.breakindent = true
-
 
 vim.opt.undofile = true
 
@@ -45,3 +46,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- -- Folding i.e. collapsing parts of the code
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

@@ -21,14 +21,4 @@ return {
 			{ "<leader>gb", "<cmd>Gblame<cr>", desc = "Git blame" },
 		},
 	},
-
-	-- 3️⃣ LazyGit integration: open LazyGit inside Neovim
-	{
-		"kdheepak/lazygit.nvim",
-		cmd = { "LazyGit", "LazyGitConfig", "LazyGitCurrentFile" },
-		keys = {
-			{ "<leader>gl", "<cmd>LazyGit<cr>", desc = "Open LazyGit" },
-		},
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
 }

@@ -7,6 +7,7 @@ return {
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"marilari88/neotest-vitest",
+			"nvim-neotest/neotest-go",
 		},
 		keys = {
 			{ "<leader>tr", "<cmd>Neotest run<cr>", desc = "Run test" },
@@ -20,6 +21,7 @@ return {
 			neotest.setup({
 				adapters = {
 					require("neotest-vitest"),
+					require("neotest-go"),
 				},
 			})
 		end,
