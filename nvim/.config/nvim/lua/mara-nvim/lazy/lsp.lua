@@ -243,9 +243,22 @@ return {
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				-- ts_ls = {},
-				--
-
+				ts_ls = {},
+				omnisharp = {
+					cmd = {
+						vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp",
+						"--languageserver",
+						"--hostPID",
+						tostring(vim.fn.getpid()),
+					},
+				},
+				emmet_language_server = {
+					filetypes = {
+						"html",
+						"css",
+						"templ",
+					},
+				},
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },
