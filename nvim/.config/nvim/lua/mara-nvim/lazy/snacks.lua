@@ -168,11 +168,25 @@ return {
 			desc = "[S]earch [C]urrent Buffer",
 		},
 		{
-			"<leader>gh",
+			"<leader>gH",
 			function()
 				Snacks.gitbrowse.open()
 			end,
 			desc = "Open [G]it[H]ub",
+		},
+		{
+			"<leader>gh",
+			function()
+				Snacks.picker.git_diff()
+			end,
+			desc = "Git Diff (Hunks)",
+		},
+		{
+			"<leader>gp",
+			function()
+				Snacks.picker.gh_pr()
+			end,
+			desc = "GitHub Pull Requests (open)",
 		},
 	},
 }

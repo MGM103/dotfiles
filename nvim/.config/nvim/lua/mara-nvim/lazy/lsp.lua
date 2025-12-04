@@ -89,7 +89,7 @@ return {
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
-					map("grd", require("snacks").picker.lsp_definitions, "[G]oto [D]efinition")
+					map("gd", require("snacks").picker.lsp_definitions, "[G]oto [D]efinition")
 
 					-- WARN: This is not Goto Definition, this is Goto Declaration.
 					--  For example, in C this would take you to the header.
@@ -219,22 +219,22 @@ return {
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				gopls = {
-					-- Enable LSP smart folding (UFO needs this)
-					foldingRange = {
-						enabled = true,
-						lineFoldingOnly = true,
-					},
-
-					usePlaceholders = true,
-					completeUnimported = true,
-					analyses = {
-						unusedparams = true,
-					},
-
-					-- Expand workspace so modules outside cwd still get LSP
-					expandWorkspaceToModule = true,
-				},
+				-- gopls = {
+				-- 	-- Enable LSP smart folding (UFO needs this)
+				-- 	foldingRange = {
+				-- 		enabled = true,
+				-- 		lineFoldingOnly = true,
+				-- 	},
+				--
+				-- 	usePlaceholders = true,
+				-- 	completeUnimported = true,
+				-- 	analyses = {
+				-- 		unusedparams = true,
+				-- 	},
+				--
+				-- 	-- Expand workspace so modules outside cwd still get LSP
+				-- 	expandWorkspaceToModule = true,
+				-- },
 				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -332,8 +332,15 @@ return {
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
 				local disable_filetypes = { c = true, cpp = true }
+				local no_lsp_formatting_filetypes =
+					{ javascript = true, javascriptreact = true, typescript = true, typescriptreact = true }
 				if disable_filetypes[vim.bo[bufnr].filetype] then
 					return nil
+				elseif no_lsp_formatting_filetypes[vim.bo[bufnr].filetype] then
+					return {
+						timeout_ms = 750,
+						lsp_format = false,
+					}
 				else
 					return {
 						timeout_ms = 500,
@@ -343,11 +350,12 @@ return {
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- Conform can also run multiple formatters sequentially
+				javascript = { "eslint_d", "prettierd" },
+				javascriptreact = { "eslint_d", "prettierd" },
+				typescript = { "eslint_d", "prettierd" },
+				typescriptreact = { "eslint_d", "prettierd" },
+				json = { "prettierd" },
 				-- python = { "isort", "black" },
-				--
-				-- You can use 'stop_after_first' to run the first available formatter from the list
-				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
