@@ -31,18 +31,21 @@ return {
     ]],
 				keys = {
 					{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-					{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+					{ icon = " ", key = "b", desc = "New File", action = ":ene | startinsert" },
 					{
 						icon = " ",
-						key = "t",
+						key = "n",
 						desc = "Toggle Neo-tree",
 						action = ":Neotree float",
 					},
 					{
-						icon = " ",
-						key = "g",
-						desc = "Find Text",
-						action = ":lua Snacks.dashboard.pick('live_grep')",
+						icon = "󱡅 ",
+						key = "h",
+						desc = "Toggle Harpoon",
+						action = function()
+							local harpoon = require("harpoon")
+							harpoon.ui:toggle_quick_menu(harpoon:list())
+						end,
 					},
 					{
 						icon = " ",
