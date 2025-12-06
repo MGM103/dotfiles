@@ -54,12 +54,6 @@ return {
 						action = ":lua Snacks.dashboard.pick('oldfiles')",
 					},
 					{
-						icon = " ",
-						key = "c",
-						desc = "Config",
-						action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-					},
-					{
 						icon = "󰒲 ",
 						key = "l",
 						desc = "Lazy",
@@ -155,13 +149,6 @@ return {
 				Snacks.picker.resume()
 			end,
 			desc = "Resume",
-		},
-		{
-			"<leader>sn",
-			function()
-				Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
-			end,
-			desc = "[S]earch [N]eoVim",
 		},
 		{
 			"<leader>sc",

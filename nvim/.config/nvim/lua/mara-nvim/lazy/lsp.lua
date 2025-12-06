@@ -219,22 +219,22 @@ return {
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				-- gopls = {
-				-- 	-- Enable LSP smart folding (UFO needs this)
-				-- 	foldingRange = {
-				-- 		enabled = true,
-				-- 		lineFoldingOnly = true,
-				-- 	},
-				--
-				-- 	usePlaceholders = true,
-				-- 	completeUnimported = true,
-				-- 	analyses = {
-				-- 		unusedparams = true,
-				-- 	},
-				--
-				-- 	-- Expand workspace so modules outside cwd still get LSP
-				-- 	expandWorkspaceToModule = true,
-				-- },
+				gopls = {
+					-- Enable LSP smart folding (UFO needs this)
+					foldingRange = {
+						enabled = true,
+						lineFoldingOnly = true,
+					},
+
+					usePlaceholders = true,
+					completeUnimported = true,
+					analyses = {
+						unusedparams = true,
+					},
+
+					-- Expand workspace so modules outside cwd still get LSP
+					expandWorkspaceToModule = true,
+				},
 				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -252,6 +252,7 @@ return {
 						tostring(vim.fn.getpid()),
 					},
 				},
+				svelte = {},
 				emmet_language_server = {
 					filetypes = {
 						"html",
@@ -419,6 +420,8 @@ return {
 				--
 				-- See :h blink-cmp-config-keymap for defining your own keymap
 				preset = "default",
+				["<c-d>"] = { "show", "show_documentation" },
+				["<c-space>"] = false,
 
 				-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
 				--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
