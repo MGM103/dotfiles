@@ -11,8 +11,9 @@ return {
 		},
 		keys = {
 			{ "<leader>tr", "<cmd>Neotest run<cr>", desc = "Run test" },
-			{ "<leader>ti", "<cmd>Neotest output<cr>", desc = "Run output" },
 			{ "<leader>ts", "<cmd>Neotest summary<cr>", desc = "Run summary" },
+			{ "<leader>tn", "<cmd>Neotest jump next<cr>", desc = "Next test" },
+			{ "<leader>tp", "<cmd>Neotest jump prev<cr>", desc = "Prev test" },
 		},
 		config = function()
 			local neotest = require("neotest")
