@@ -29,6 +29,10 @@ return {
 					end
 					gs.nav_hunk("prev")
 				end, "Previous hunk")
+
+				map("n", "<leader>gB", function()
+					gs.blame_line({ full = true })
+				end, "Blame line")
 			end,
 		},
 	},
@@ -37,8 +41,34 @@ return {
 		cmd = { "Git", "G", "Gdiffsplit", "Git blame" },
 		keys = {
 			{ "<leader>gs", "<cmd>Git<cr>", desc = "Git status" },
-			{ "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Git diff split" },
 			{ "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
 		},
+	},
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		keys = {
+			{ "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview Open" },
+			{ "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "Diffview Close" },
+			{ "<leader>gf", "<cmd>DiffviewFileHistory<cr>", desc = "Diffview File History" },
+		},
+		config = function()
+			require("diffview").setup({
+				enhanced_diff_hl = true, -- Better colors
+				view = {
+					merge_tool = {
+						layout = "diff3_mixed",
+						disable_diagnostics = true,
+					},
+				},
+				file_panel = {
+					listing_style = "tree",
+					win_config = {
+						position = "bottom",
+						height = 10,
+					},
+				},
+			})
+		end,
 	},
 }
