@@ -41,13 +41,13 @@ return { -- Useful plugin to show you pending keybinds.
 				F12 = "<F12>",
 			},
 		},
-
 		spec = {
+			{ "<leader>c", group = "[C]spell/[C]loak" },
+			{ "<leader>g", group = "[G]it utilities" },
 			{ "<leader>r", group = "[R]ename" },
 			{ "<leader>s", group = "[S]earch" },
-			{ "<leader>w", group = "[W]orkspace" },
 			{ "<leader>t", group = "[T]est" },
-			{ "<leader>g", group = "[G]it utilities" },
+			{ "<leader>w", group = "[W]orkspace" },
 			{ "<leader>x", group = "Trouble utilities" },
 		},
 	},

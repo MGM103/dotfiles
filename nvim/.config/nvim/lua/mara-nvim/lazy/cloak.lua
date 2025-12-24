@@ -21,8 +21,8 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>c", function()
+		vim.keymap.set("n", "<leader>ct", function()
 			require("cloak").toggle()
-		end, { desc = "Toggle [C]loak" })
+		end, { desc = "[T]oggle cloak" })
 	end,
 }

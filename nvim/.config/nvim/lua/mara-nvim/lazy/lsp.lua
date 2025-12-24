@@ -1,4 +1,5 @@
 return {
+	"tpope/vim-sleuth",
 	{
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
@@ -219,6 +220,31 @@ return {
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
+				cspell_ls = {
+					cmd = { "cspell-ls", "--stdio" },
+					filetypes = {
+						"css",
+						"gitcommit",
+						"html",
+						"javascript",
+						"javascriptreact",
+						"json",
+						"lua",
+						"markdown",
+						"python",
+						"typescript",
+						"typescriptreact",
+						"yaml",
+					},
+					root_markers = { ".git" },
+				},
+				emmet_language_server = {
+					filetypes = {
+						"html",
+						"css",
+						"templ",
+					},
+				},
 				gopls = {
 					-- Enable LSP smart folding (UFO needs this)
 					foldingRange = {
@@ -235,31 +261,6 @@ return {
 					-- Expand workspace so modules outside cwd still get LSP
 					expandWorkspaceToModule = true,
 				},
-				-- pyright = {},
-				-- rust_analyzer = {},
-				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				--
-				-- Some languages (like typescript) have entire language plugins that can be useful:
-				--    https://github.com/pmizio/typescript-tools.nvim
-				--
-				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				ts_ls = {},
-				omnisharp = {
-					cmd = {
-						vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp",
-						"--languageserver",
-						"--hostPID",
-						tostring(vim.fn.getpid()),
-					},
-				},
-				svelte = {},
-				emmet_language_server = {
-					filetypes = {
-						"html",
-						"css",
-						"templ",
-					},
-				},
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },
@@ -274,6 +275,16 @@ return {
 						},
 					},
 				},
+				omnisharp = {
+					cmd = {
+						vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp",
+						"--languageserver",
+						"--hostPID",
+						tostring(vim.fn.getpid()),
+					},
+				},
+				svelte = {},
+				ts_ls = {},
 			}
 
 			-- Ensure the servers and tools above are installed
@@ -291,7 +302,9 @@ return {
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
+				"eslint_d",
+				"prettierd",
+				"stylua",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
