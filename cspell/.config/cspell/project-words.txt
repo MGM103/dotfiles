@@ -5,3 +5,6 @@ Vyas
 charmbracelet
 bubbletea
 watchlist
+lipgloss
+catppuccin
+Catpuccin
