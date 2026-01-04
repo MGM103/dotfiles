@@ -1,6 +1,5 @@
 source ~/shell/aliases
 source ~/shell/envs
 source ~/shell/functions
-source ~/shell/prompt
 source ~/shell/shell
 source ~/shell/init # must go last
