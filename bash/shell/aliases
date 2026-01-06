@@ -28,3 +28,8 @@ alias ....='cd ../../..'
 
 # Git
 alias gcm='git commit -m'
+
+# tmux
+alias tsw='tmux swap-window -t'
+alias tks='tmux kill-session -t'
+alias tksvr='tmux kill-server'
