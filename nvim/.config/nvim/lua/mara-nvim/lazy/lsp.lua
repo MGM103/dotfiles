@@ -261,6 +261,7 @@ return {
 					-- Expand workspace so modules outside cwd still get LSP
 					expandWorkspaceToModule = true,
 				},
+				templ = {},
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },

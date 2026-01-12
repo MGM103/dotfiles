@@ -10,3 +10,6 @@ catppuccin
 Catpuccin
 wezterm
 setw
+templ
+htmx
+stylesheet
