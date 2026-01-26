@@ -238,6 +238,7 @@ return {
 					},
 					root_markers = { ".git" },
 				},
+				cssls = {},
 				emmet_language_server = {
 					filetypes = {
 						"html",
@@ -363,13 +364,26 @@ return {
 					}
 				end
 			end,
+			formatters = {
+				formatters = {
+					templ = {
+						command = "templ",
+						args = { "fmt", "$FILENAME" },
+						stdin = false,
+					},
+				},
+			},
 			formatters_by_ft = {
-				lua = { "stylua" },
+				css = { "prettierd" },
+				html = { "prettierd" },
 				javascript = { "eslint_d", "prettierd" },
 				javascriptreact = { "eslint_d", "prettierd" },
+				json = { "prettierd" },
+				lua = { "stylua" },
+				scss = { "prettierd" },
+				templ = { "templ" },
 				typescript = { "eslint_d", "prettierd" },
 				typescriptreact = { "eslint_d", "prettierd" },
-				json = { "prettierd" },
 				-- python = { "isort", "black" },
 			},
 		},
