@@ -33,3 +33,8 @@ alias gcm='git commit -m'
 alias tsw='tmux swap-window -t'
 alias tks='tmux kill-session -t'
 alias tksvr='tmux kill-server'
+alias tns='tmux new-session -ds'
+
+# Node shortcuts
+alias ladle='npm run ladle'
+alias dev='npm run dev'
