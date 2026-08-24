@@ -27,14 +27,30 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # Git
+alias g='git'
 alias gcm='git commit -m'
 
 # tmux
-alias tsw='tmux swap-window -t'
 alias tks='tmux kill-session -t'
 alias tksvr='tmux kill-server'
 alias tns='tmux new-session -ds'
+alias tsw='tmux swap-window -t'
 
 # Node shortcuts
+alias changeset='npm run changeset'
 alias ladle='npm run ladle'
-alias dev='npm run dev'
+alias lint='npm run lint:fix'
+alias tc='npm run type-check'
+alias vt='npm run visual-tests'
+
+# Apps
+alias oc='opencode'
+
+# Projects
+alias lcw='z lifechain-web'
+alias lcui='z lifechain-ui'
+alias lcww='z workflow-web'
+alias lcll='z lifelink-web'
+alias lcws='z lifechain-workflow-service'
+alias lcds='z lifechain-device-service'
+alias lcas='z tenant-admin-service'

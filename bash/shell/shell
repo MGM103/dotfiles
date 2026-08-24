@@ -1,8 +1,16 @@
 # History control
 shopt -s histappend
-HISTCONTROL=ignoreboth
-HISTSIZE=32768
-HISTFILESIZE="${HISTSIZE}"
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=1000000
+HISTFILESIZE=1000000
+HISTTIMEFORMAT='%F %T  '
+
+# Persist each command immediately and import commands from other shells.
+__sync_history() {
+  history -a
+  history -n
+}
+PROMPT_COMMAND+=(__sync_history)
 
 # Autocompletion
 if [[ ! -v BASH_COMPLETION_VERSINFO && -f /usr/share/bash-completion/bash_completion ]]; then
