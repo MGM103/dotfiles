@@ -1,0 +1,52 @@
+#!/bin/bash
+set -euo pipefail
+
+COLORS_TOML="$HOME/.local/state/omarchy/current/theme/colors.toml"
+OUT_FILE="$HOME/.cache/tmux/theme-palette.conf"
+
+mkdir -p "${OUT_FILE%/*}"
+
+if [[ ! -f $COLORS_TOML ]]; then
+  rm -f "$OUT_FILE"
+  exit 0
+fi
+
+toml_value() {
+  awk -F'"' -v key="$1" '$1 ~ "^[[:space:]]*"key"[[:space:]]*=" { print $2; exit }' "$COLORS_TOML"
+}
+
+emit() {
+  local option=$1 key=$2 value
+  value=$(toml_value "$key")
+  [[ -n $value ]] || return 0
+  if [[ ! $value =~ ^[0-9A-Za-z_%#.:-]+$ ]]; then
+    echo "tmux-theme-palette: skipping unsafe value for $key" >&2
+    return 0
+  fi
+  printf 'set -g %s "%s"\n' "$option" "$value"
+}
+
+{
+  emit "@thm_bg"        "darker_background"
+  emit "@thm_mantle"    "background"
+  emit "@thm_crust"     "dark_background"
+  emit "@thm_fg"        "foreground"
+  emit "@thm_surface_0" "selection"
+  emit "@thm_surface_1" "muted"
+  emit "@thm_overlay_2" "light_foreground"
+
+  emit "@thm_mauve"     "accent"
+  emit "@thm_lavender"  "bright_blue"
+  emit "@thm_red"       "bright_red"
+  emit "@thm_maroon"    "red"
+  emit "@thm_peach"     "orange"
+  emit "@thm_yellow"    "yellow"
+  emit "@thm_green"     "bright_green"
+  emit "@thm_teal"      "cyan"
+  emit "@thm_sky"       "cyan"
+  emit "@thm_rosewater" "cyan"
+  emit "@thm_flamingo"  "magenta"
+  emit "@thm_pink"      "magenta"
+  emit "@thm_sapphire"  "blue"
+  emit "@thm_blue"      "blue"
+} > "$OUT_FILE"
