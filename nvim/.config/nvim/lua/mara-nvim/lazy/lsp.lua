@@ -371,6 +371,11 @@ return {
 						args = { "fmt", "$FILENAME" },
 						stdin = false,
 					},
+					xmllint = {
+						command = "xmllint",
+						args = { "--format", "--recover", "-" },
+						stdin = true,
+					},
 				},
 			},
 			formatters_by_ft = {
@@ -381,6 +386,7 @@ return {
 				json = { "prettierd" },
 				lua = { "stylua" },
 				scss = { "prettierd" },
+				svg = { "xmllint" },
 				templ = { "templ" },
 				typescript = { "eslint_d", "prettierd" },
 				typescriptreact = { "eslint_d", "prettierd" },

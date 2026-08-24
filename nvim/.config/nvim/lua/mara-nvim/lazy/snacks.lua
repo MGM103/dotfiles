@@ -66,7 +66,7 @@ return {
 		},
 		explorer = { enabled = false },
 		gitbrowse = {},
-		image = { enabled = true },
+		image = { enabled = true, doc = { inline = false } },
 		indent = { enabled = false },
 		input = { enabled = false },
 		lazygit = {},
