@@ -1,7 +1,16 @@
 -- Defining custom behaviour for specific filetypes
 vim.filetype.add({
 	extension = {
+		env = "sh",
 		templ = "templ",
+		svg = "xml",
+	},
+	filename = {
+		[".env"] = "sh",
+	},
+	pattern = {
+		["%.env%.[%w_.-]+"] = "sh",
+		[".*%.swagger%.js"] = "yaml",
 	},
 })
 
@@ -11,21 +20,3 @@ vim.g.user_emmet_settings = {
 		extends = "html",
 	},
 }
-
-vim.filetype.add({
-	pattern = {
-		[".*%.swagger%.js"] = "yaml",
-	},
-})
-
-vim.filetype.add({
-	extension = {
-		env = "sh",
-	},
-	filename = {
-		[".env"] = "sh",
-	},
-	pattern = {
-		["%.env%.[%w_.-]+"] = "sh",
-	},
-})

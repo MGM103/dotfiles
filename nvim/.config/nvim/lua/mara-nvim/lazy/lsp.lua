@@ -287,6 +287,15 @@ return {
 				},
 				svelte = {},
 				ts_ls = {},
+				yamlls = {
+					settings = {
+						yaml = {
+							format = {
+								singleQuote = true,
+							},
+						},
+					},
+				},
 			}
 
 			-- Ensure the servers and tools above are installed
@@ -307,22 +316,17 @@ return {
 				"eslint_d",
 				"prettierd",
 				"stylua",
+				"xmlformatter",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+			for server_name, server in pairs(servers) do
+				server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+				vim.lsp.config(server_name, server)
+			end
+
 			require("mason-lspconfig").setup({
 				ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-				automatic_installation = false,
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						-- This handles overriding only values explicitly passed
-						-- by the server configuration above. Useful when disabling
-						-- certain features of an LSP (for example, turning off formatting for ts_ls)
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
-					end,
-				},
 			})
 		end,
 	},
@@ -365,17 +369,10 @@ return {
 				end
 			end,
 			formatters = {
-				formatters = {
-					templ = {
-						command = "templ",
-						args = { "fmt", "$FILENAME" },
-						stdin = false,
-					},
-					xmllint = {
-						command = "xmllint",
-						args = { "--format", "--recover", "-" },
-						stdin = true,
-					},
+				templ = {
+					command = "templ",
+					args = { "fmt", "$FILENAME" },
+					stdin = false,
 				},
 			},
 			formatters_by_ft = {
@@ -386,11 +383,10 @@ return {
 				json = { "prettierd" },
 				lua = { "stylua" },
 				scss = { "prettierd" },
-				svg = { "xmllint" },
 				templ = { "templ" },
 				typescript = { "eslint_d", "prettierd" },
 				typescriptreact = { "eslint_d", "prettierd" },
-				-- python = { "isort", "black" },
+				xml = { "xmlformatter" },
 			},
 		},
 	},
