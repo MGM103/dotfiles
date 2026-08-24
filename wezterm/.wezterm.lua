@@ -19,33 +19,18 @@ config.cursor_blink_rate = 500
 config.window_decorations = "NONE"
 
 -- WSL
---config.default_domain = "WSL:Ubuntu"
---config.wsl_domains = {
---	{
---		name = "WSL:Ubuntu",
---		distribution = "Ubuntu",
---		default_cwd = "~/projects",
---	},
---}
+config.default_domain = "WSL:Ubuntu"
+config.wsl_domains = {
+	{
+		name = "WSL:Ubuntu",
+		distribution = "Ubuntu",
+		default_cwd = "~/projects",
+	},
+}
 
 -- KEY RE-MAPPINGS
+config.enable_csi_u_key_encoding = true
 local act = wezterm.action
--- config.keys = {
--- 	{
--- 		key = "c",
--- 		mods = "CTRL",
--- 		action = act({
--- 			CopyTo = "Clipboard",
--- 		}),
--- 	},
--- 	{
--- 		key = "v",
--- 		mods = "CTRL",
--- 		action = act({
--- 			PasteFrom = "Clipboard",
--- 		}),
--- 	},
--- }
 
 -- MOUSE RE-MAPPINGS
 config.mouse_bindings = {
