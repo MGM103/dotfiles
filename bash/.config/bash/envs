@@ -1,0 +1,21 @@
+# Omarchy already exports EDITOR via omarchy-launch-editor, which follows the
+# editor chosen in Omarchy defaults (nvim by default). Only fall back to nvim
+# on machines without Omarchy, such as WSL.
+if ! command -v omarchy-launch-editor >/dev/null 2>&1; then
+  export EDITOR="${EDITOR:-nvim}"
+  export VISUAL="${VISUAL:-$EDITOR}"
+  export SUDO_EDITOR="${SUDO_EDITOR:-$EDITOR}"
+  export GIT_EDITOR="${GIT_EDITOR:-$EDITOR}"
+fi
+
+# Readline configuration. Omarchy applies its own inputrc with `bind -f`, so
+# only use the vendored copy on WSL.
+if [[ -n "${WSL_DISTRO_NAME:-}" && -r "$HOME/.config/bash/inputrc" ]]; then
+  export INPUTRC="$HOME/.config/bash/inputrc"
+fi
+
+# User binaries
+case ":$PATH:" in
+  *":$HOME/.local/bin:"*) ;;
+  *) export PATH="$HOME/.local/bin:$PATH" ;;
+esac

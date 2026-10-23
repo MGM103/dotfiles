@@ -1,0 +1,10 @@
+# Open files or directories with the platform opener
+if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
+  open() {
+    explorer.exe "$(wslpath -w "$1")" >/dev/null 2>&1
+  }
+elif command -v xdg-open >/dev/null 2>&1; then
+  open() {
+    xdg-open "$@" >/dev/null 2>&1 &
+  }
+fi

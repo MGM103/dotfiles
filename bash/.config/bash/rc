@@ -1,0 +1,5 @@
+# Personal bash layer, sourced from ~/.bashrc after the OS defaults.
+for _file in envs shell aliases functions init; do
+  [ -r "$HOME/.config/bash/$_file" ] && . "$HOME/.config/bash/$_file"
+done
+unset _file

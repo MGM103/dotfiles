@@ -1,0 +1,30 @@
+# Omarchy initializes zoxide, fzf and starship in its own rc. Only do it here
+# on machines without Omarchy (e.g. WSL).
+if ! command -v omarchy-launch-editor >/dev/null 2>&1; then
+  if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init bash)"
+  fi
+
+  if command -v fzf >/dev/null 2>&1; then
+    for _file in \
+      /usr/share/bash-completion/completions/fzf \
+      /usr/share/fzf/completion.bash \
+      /usr/share/fzf/key-bindings.bash \
+      /usr/share/doc/fzf/examples/completion.bash \
+      /usr/share/doc/fzf/examples/key-bindings.bash; do
+      [ -r "$_file" ] && . "$_file"
+    done
+    unset _file
+  fi
+
+  if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init bash)"
+  fi
+fi
+
+# nvm
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+
+true
