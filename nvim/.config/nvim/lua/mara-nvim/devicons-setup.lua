@@ -1,4 +1,20 @@
-require("nvim-web-devicons").setup({
+local devicons = require("nvim-web-devicons")
+
+-- U+E027 has no glyph in WezTerm; use a neutral document icon instead.
+-- Cover both lookup APIs so filename, filetype, and color lookups agree.
+local unsupported_icon = vim.fn.nr2char(0xe027)
+for _, method in ipairs({ "get_icon", "get_icon_colors" }) do
+	local get_icon = devicons[method]
+	devicons[method] = function(...)
+		local icon, highlight_or_color, cterm_color = get_icon(...)
+		if icon then
+			icon = icon:gsub(unsupported_icon, "")
+		end
+		return icon, highlight_or_color, cterm_color
+	end
+end
+
+devicons.setup({
 	override = {
 		stories = {
 			icon = "📖",
@@ -29,6 +45,18 @@ require("nvim-web-devicons").setup({
 			color = "#E84A5F",
 			cterm_color = "203",
 			name = "StoriesJs",
+		},
+		["package.json"] = {
+			icon = "",
+			color = "#CB3837",
+			cterm_color = "167",
+			name = "PackageJson",
+		},
+		["package-lock.json"] = {
+			icon = "",
+			color = "#CB3837",
+			cterm_color = "167",
+			name = "PackageLockJson",
 		},
 		["vite.config.ts"] = {
 			icon = "⚡",

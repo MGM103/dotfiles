@@ -1,3 +1,20 @@
+local eslint_filetypes = {
+	javascript = true,
+	javascriptreact = true,
+	typescript = true,
+	typescriptreact = true,
+}
+
+local function eslint_format_options(bufnr)
+	return {
+		bufnr = bufnr,
+		lsp_format = "first",
+		filter = function(client)
+			return client.name == "eslint"
+		end,
+	}
+end
+
 return {
 	"tpope/vim-sleuth",
 	{
@@ -239,28 +256,21 @@ return {
 					root_markers = { ".git" },
 				},
 				cssls = {},
+				eslint = {
+					settings = {
+						-- Keep linting off the synchronous save-formatting path.
+						run = "onSave",
+						-- Expose fix-all as formatting for asynchronous <leader>f.
+						format = true,
+						workingDirectory = { mode = "auto" },
+					},
+				},
 				emmet_language_server = {
 					filetypes = {
 						"html",
 						"css",
 						"templ",
 					},
-				},
-				gopls = {
-					-- Enable LSP smart folding (UFO needs this)
-					foldingRange = {
-						enabled = true,
-						lineFoldingOnly = true,
-					},
-
-					usePlaceholders = true,
-					completeUnimported = true,
-					analyses = {
-						unusedparams = true,
-					},
-
-					-- Expand workspace so modules outside cwd still get LSP
-					expandWorkspaceToModule = true,
 				},
 				templ = {},
 				lua_ls = {
@@ -297,6 +307,24 @@ return {
 					},
 				},
 			}
+			if vim.fn.executable("go") == 1 then
+				servers.gopls = {
+					-- Enable LSP smart folding (UFO needs this)
+					foldingRange = {
+						enabled = true,
+						lineFoldingOnly = true,
+					},
+
+					usePlaceholders = true,
+					completeUnimported = true,
+					analyses = {
+						unusedparams = true,
+					},
+
+					-- Expand workspace so modules outside cwd still get LSP
+					expandWorkspaceToModule = true,
+				}
+			end
 
 			-- Ensure the servers and tools above are installed
 			--
@@ -313,7 +341,6 @@ return {
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"eslint_d",
 				"prettierd",
 				"stylua",
 				"xmlformatter",
@@ -339,7 +366,14 @@ return {
 			{
 				"<leader>f",
 				function()
-					require("conform").format({ async = true, lsp_format = "fallback" })
+					if eslint_filetypes[vim.bo.filetype] then
+						-- Fix lint rules through the warm server, then format with Prettier.
+						local opts = eslint_format_options(vim.api.nvim_get_current_buf())
+						opts.async = true
+						require("conform").format(opts)
+					else
+						require("conform").format({ async = true, lsp_format = "fallback" })
+					end
 				end,
 				mode = "",
 				desc = "[F]ormat buffer",
@@ -352,20 +386,22 @@ return {
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
 				local disable_filetypes = { c = true, cpp = true }
-				local no_lsp_formatting_filetypes =
-					{ javascript = true, javascriptreact = true, typescript = true, typescriptreact = true }
-				if disable_filetypes[vim.bo[bufnr].filetype] then
+				if disable_filetypes[vim.bo[bufnr].filetype] or eslint_filetypes[vim.bo[bufnr].filetype] then
 					return nil
-				elseif no_lsp_formatting_filetypes[vim.bo[bufnr].filetype] then
-					return {
-						timeout_ms = 750,
-						lsp_format = false,
-					}
 				else
 					return {
 						timeout_ms = 500,
 						lsp_format = "fallback",
 					}
+				end
+			end,
+			format_after_save = function(bufnr)
+				if eslint_filetypes[vim.bo[bufnr].filetype] then
+					-- Async fixes + Prettier; Conform writes the result without a save loop.
+					local opts = eslint_format_options(bufnr)
+					-- Allow cold type-aware linting to finish when exiting with :wq.
+					opts.timeout_ms = 15000
+					return opts
 				end
 			end,
 			formatters = {
@@ -378,14 +414,15 @@ return {
 			formatters_by_ft = {
 				css = { "prettierd" },
 				html = { "prettierd" },
-				javascript = { "eslint_d", "prettierd" },
-				javascriptreact = { "eslint_d", "prettierd" },
+				-- Async LSP formatting applies ESLint fixes before Prettier.
+				javascript = { "prettierd" },
+				javascriptreact = { "prettierd" },
 				json = { "prettierd" },
 				lua = { "stylua" },
 				scss = { "prettierd" },
 				templ = { "templ" },
-				typescript = { "eslint_d", "prettierd" },
-				typescriptreact = { "eslint_d", "prettierd" },
+				typescript = { "prettierd" },
+				typescriptreact = { "prettierd" },
 				xml = { "xmlformatter" },
 			},
 		},
@@ -442,7 +479,7 @@ return {
 				-- No, but seriously. Please read `:help ins-completion`, it is really good!
 				--
 				-- All presets have the following mappings:
-				-- <tab>/<s-tab>: move to right/left of your snippet expansion
+				-- <tab>/<s-tab>: move to right/left of your snippet expansion (overridden below)
 				-- <c-space>: Open menu or open docs if already open
 				-- <c-n>/<c-p> or <up>/<down>: Select next/previous item
 				-- <c-e>: Hide menu
@@ -450,6 +487,11 @@ return {
 				--
 				-- See :h blink-cmp-config-keymap for defining your own keymap
 				preset = "default",
+				-- Keep Tab for indentation; use explicit keys for snippet navigation.
+				["<Tab>"] = { "fallback" },
+				["<S-Tab>"] = { "fallback" },
+				["<A-n>"] = { "snippet_forward", "fallback" },
+				["<A-p>"] = { "snippet_backward", "fallback" },
 				["<c-d>"] = { "show", "show_documentation" },
 				["<c-space>"] = false,
 

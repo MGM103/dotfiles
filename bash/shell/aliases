@@ -45,6 +45,7 @@ alias vt='npm run visual-tests'
 
 # Apps
 alias oc='opencode'
+alias n='nvim'
 
 # Projects
 alias lcw='z lifechain-web'

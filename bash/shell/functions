@@ -2,6 +2,17 @@
 compress() { tar -czf "${1%/}.tar.gz" "${1%/}"; }
 alias decompress="tar -xzf"
 
+# Jump to a zoxide directory and optionally run a command there.
+_zrun() {
+  local destination="$1"
+  shift
+
+  z "$destination" || return
+  if [ "$#" -gt 0 ]; then
+    "$@"
+  fi
+}
+
 # Create a desktop launcher for a web app
 web2app() {
   if [ "$#" -ne 3 ]; then

@@ -44,7 +44,6 @@ return { -- Useful plugin to show you pending keybinds.
 		spec = {
 			{ "<leader>c", group = "[C]spell/[C]loak" },
 			{ "<leader>g", group = "[G]it utilities" },
-			{ "<leader>r", group = "[R]ename" },
 			{ "<leader>s", group = "[S]earch" },
 			{ "<leader>t", group = "[T]est" },
 			{ "<leader>w", group = "[W]orkspace" },

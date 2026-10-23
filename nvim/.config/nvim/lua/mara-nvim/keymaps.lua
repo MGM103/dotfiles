@@ -5,6 +5,8 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+vim.keymap.set({ "n", "x" }, "go", "gg", { desc = "Go to top of file" })
+
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to lower window" })

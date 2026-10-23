@@ -69,8 +69,24 @@ return {
 		image = { enabled = true, doc = { inline = false } },
 		indent = { enabled = false },
 		input = { enabled = false },
-		lazygit = {},
-		picker = { enabled = true },
+		lazygit = {
+			config = {
+				gui = {
+					customIcons = {
+						filenames = {
+							["package.json"] = { icon = "", color = "#CB3837" },
+							["package-lock.json"] = { icon = "", color = "#CB3837" },
+						},
+					},
+				},
+			},
+		},
+		picker = {
+			enabled = true,
+			sources = {
+				files = { hidden = true, ignored = false },
+			},
+		},
 		notifier = { enabled = false },
 		quickfile = { enabled = true },
 		scope = { enabled = false },
@@ -79,6 +95,13 @@ return {
 		words = { enabled = false },
 	},
 	keys = {
+		{
+			"<leader>r",
+			function()
+				Snacks.rename.rename_file()
+			end,
+			desc = "[R]ename file (update imports)",
+		},
 		{
 			"<leader>gl",
 			function()
