@@ -66,7 +66,7 @@ return {
 		},
 		explorer = { enabled = false },
 		gitbrowse = {},
-		image = { enabled = true, doc = { inline = false } },
+		image = { enabled = true, doc = { inline = false, max_width = 40, max_height = 20 } },
 		indent = { enabled = false },
 		input = { enabled = false },
 		lazygit = {
@@ -93,6 +93,13 @@ return {
 		scroll = { enabled = false },
 		statuscolumn = { enabled = false },
 		words = { enabled = false },
+		styles = {
+			snacks_image = {
+				relative = "editor",
+				row = 1,
+				col = -1,
+			},
+		},
 	},
 	keys = {
 		{
