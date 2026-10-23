@@ -1,3 +1,5 @@
+local omarchy_theme = require("mara-nvim.omarchy-theme")
+
 return { -- You can easily change to a different colorscheme.
 	-- Change the name of the colorscheme plugin below, and then
 	-- change the command in the config to whatever the name of that colorscheme is.
@@ -16,6 +18,10 @@ return { -- You can easily change to a different colorscheme.
 		-- Load the colorscheme here.
 		-- Like many other themes, this one has different styles, and you could load
 		-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+		if omarchy_theme.colorscheme then
+			return
+		end
+
 		vim.cmd.colorscheme("tokyonight-moon")
 	end,
 }

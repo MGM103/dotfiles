@@ -11,8 +11,10 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
+local omarchy_theme = require("mara-nvim.omarchy-theme")
+
 require("lazy").setup({
-	spec = "mara-nvim.lazy",
+	spec = vim.list_extend({ { import = "mara-nvim.lazy" } }, omarchy_theme.specs),
 	change_detection = { notify = false },
 }, {
 	ui = {
@@ -35,3 +37,5 @@ require("lazy").setup({
 		},
 	},
 })
+
+omarchy_theme.apply()
