@@ -28,4 +28,8 @@ tsw() {
 
 # Apps
 alias oc='opencode'
-alias n='nvim'
+
+# A function, not an alias, so it replaces Omarchy's n() instead of shadowing it.
+# Theirs runs `nvim .` with no arguments (docked neo-tree, no dashboard), which
+# still leaked through \n and non-interactive use while this was an alias.
+n() { command nvim "$@"; }
