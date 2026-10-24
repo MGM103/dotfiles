@@ -13,6 +13,74 @@ if [[ ${EUID:-$(id -u)} -ne 0 ]]; then
   SUDO=(sudo)
 fi
 
+is_wsl() {
+  [[ -n ${WSL_DISTRO_NAME:-} ]] && return 0
+  [[ -r /proc/version ]] && grep -qi microsoft /proc/version
+}
+
+package_supported() {
+  case $1 in
+    ghostty) ! is_wsl ;;
+    *) return 0 ;;
+  esac
+}
+
+# Files these packages link into $HOME. If one already exists as a regular
+# file it is replaced by the symlink (identical content) or moved aside first.
+displaced_targets() {
+  case $1 in
+    ghostty) printf '%s\n' ".config/ghostty/config" ;;
+    opencode) printf '%s\n' ".config/opencode/opencode.json" ;;
+  esac
+}
+
+displace_targets() {
+  local package=$1 rel target backup
+
+  while IFS= read -r rel; do
+    [[ -n $rel ]] || continue
+    target="$HOME/$rel"
+    [[ -e $target && ! -L $target ]] || continue
+
+    if cmp -s "$DOTFILES_DIR/$package/$rel" "$target"; then
+      say "Replacing $target with a stow symlink (content identical)"
+      rm -f "$target"
+      continue
+    fi
+
+    backup="$target.bak.$(date +%s)"
+    say "Moving $target aside (not a stow symlink): $backup"
+    warn "review $backup and copy any wanted changes into $DOTFILES_DIR/$package"
+    mv "$target" "$backup"
+  done < <(displaced_targets "$package")
+}
+
+# OpenCode rewrites cli.json itself (and drops keys it does not manage), so a
+# symlink would not survive normal use. The repo copy stays authoritative and
+# is installed as a plain file instead.
+install_opencode_cli_config() {
+  local source="$DOTFILES_DIR/opencode/.config/opencode/cli.json"
+  local target="$HOME/.config/opencode/cli.json"
+  local backup
+
+  [[ -f $source ]] || return 0
+  install -d "$(dirname -- "$target")"
+
+  if [[ -f $target ]] && cmp -s "$source" "$target"; then
+    say "opencode cli.json already matches the repo"
+    return 0
+  fi
+
+  if [[ -e $target ]]; then
+    backup="$target.bak.$(date +%s)"
+    say "Backing up $target -> $backup"
+    mv "$target" "$backup"
+  fi
+
+  say "Installing opencode cli.json (copied, not symlinked)"
+  install -m 600 "$source" "$target"
+}
+
 install_arch() {
   say "Installing packages with pacman"
   "${SUDO[@]}" pacman -S --needed --noconfirm \
@@ -53,6 +121,8 @@ Installs the required tools, then stows dotfiles packages into $HOME.
   all             Stow every package
   <package>...    Stow only the named packages (e.g. bash nvim tmux)
   -h, --help      Show this help
+
+The ghostty package is skipped on WSL, where Ghostty is not supported.
 EOF
 }
 
@@ -65,9 +135,13 @@ install_tools() {
     die "Unsupported package manager (expected pacman or apt-get)"
   fi
 
-  for tool in nvim eza zoxide fzf starship stow; do
+  for tool in nvim eza zoxide fzf starship stow opencode; do
     command -v "$tool" >/dev/null 2>&1 || warn "$tool is not installed"
   done
+
+  if ! is_wsl; then
+    command -v ghostty >/dev/null 2>&1 || warn "ghostty is not installed"
+  fi
 }
 
 sync_inputrc() {
@@ -99,11 +173,21 @@ link_packages() {
   for package in "${packages[@]}"; do
     [[ -d "$DOTFILES_DIR/$package" ]] || die "no such stow package: $package"
 
+    if ! package_supported "$package"; then
+      say "Skipping $package (not supported on this platform)"
+      continue
+    fi
+
     if [[ $package == bash && -e "$HOME/.config/bash" && ! -L "$HOME/.config/bash" ]]; then
       die "$HOME/.config/bash already exists and is not a symlink; move it aside and re-run"
     fi
 
+    displace_targets "$package"
     ( cd "$DOTFILES_DIR" && stow --target="$HOME" "$package" )
+
+    case $package in
+      opencode) install_opencode_cli_config ;;
+    esac
   done
 }
 
