@@ -22,7 +22,9 @@ alias gcm='git commit -m'
 alias tks='tmux kill-session -t'
 alias tksvr='tmux kill-server'
 alias tns='tmux new-session -ds'
-alias tsw='tmux swap-window -t'
+tsw() {
+  tmux swap-window -t "$1" && tmux select-window -t "$1"
+}
 
 # Node shortcuts
 alias changeset='npm run changeset'
