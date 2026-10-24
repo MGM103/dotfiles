@@ -3,3 +3,7 @@ for _file in envs shell aliases functions init; do
   [ -r "$HOME/.config/bash/$_file" ] && . "$HOME/.config/bash/$_file"
 done
 unset _file
+
+# Machine-local aliases, functions, and exports. Deliberately outside this
+# repo's working tree so it is never tracked, copied, or removed by git.
+[ -r "$HOME/.config/bash.local" ] && . "$HOME/.config/bash.local"

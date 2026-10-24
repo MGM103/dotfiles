@@ -26,24 +26,6 @@ tsw() {
   tmux swap-window -t "$1" && tmux select-window -t "$1"
 }
 
-# Node shortcuts
-alias changeset='npm run changeset'
-alias ladle='npm run ladle'
-alias lint='npm run lint:fix'
-alias tc='npm run type-check'
-alias vt='npm run visual-tests'
-
 # Apps
 alias oc='opencode'
 alias n='nvim'
-
-# Projects
-if command -v zoxide >/dev/null 2>&1; then
-  alias lcw='z lifechain-web'
-  alias lcui='z lifechain-ui'
-  alias lcww='z workflow-web'
-  alias lcll='z lifelink-web'
-  alias lcws='z lifechain-workflow-service'
-  alias lcds='z lifechain-device-service'
-  alias lcas='z tenant-admin-service'
-fi
