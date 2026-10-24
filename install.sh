@@ -30,7 +30,6 @@ package_supported() {
 displaced_targets() {
   case $1 in
     ghostty) printf '%s\n' ".config/ghostty/config" ;;
-    opencode) printf '%s\n' ".config/opencode/opencode.json" ;;
   esac
 }
 
@@ -53,32 +52,6 @@ displace_targets() {
     warn "review $backup and copy any wanted changes into $DOTFILES_DIR/$package"
     mv "$target" "$backup"
   done < <(displaced_targets "$package")
-}
-
-# OpenCode rewrites cli.json itself (and drops keys it does not manage), so a
-# symlink would not survive normal use. The repo copy stays authoritative and
-# is installed as a plain file instead.
-install_opencode_cli_config() {
-  local source="$DOTFILES_DIR/opencode/.config/opencode/cli.json"
-  local target="$HOME/.config/opencode/cli.json"
-  local backup
-
-  [[ -f $source ]] || return 0
-  install -d "$(dirname -- "$target")"
-
-  if [[ -f $target ]] && cmp -s "$source" "$target"; then
-    say "opencode cli.json already matches the repo"
-    return 0
-  fi
-
-  if [[ -e $target ]]; then
-    backup="$target.bak.$(date +%s)"
-    say "Backing up $target -> $backup"
-    mv "$target" "$backup"
-  fi
-
-  say "Installing opencode cli.json (copied, not symlinked)"
-  install -m 600 "$source" "$target"
 }
 
 install_arch() {
@@ -184,10 +157,6 @@ link_packages() {
 
     displace_targets "$package"
     ( cd "$DOTFILES_DIR" && stow --target="$HOME" "$package" )
-
-    case $package in
-      opencode) install_opencode_cli_config ;;
-    esac
   done
 }
 
