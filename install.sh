@@ -29,6 +29,7 @@ package_supported() {
 # file it is replaced by the symlink (identical content) or moved aside first.
 displaced_targets() {
   case $1 in
+    codebook) printf '%s\n' ".config/codebook/codebook.toml" ;;
     ghostty) printf '%s\n' ".config/ghostty/config" ;;
   esac
 }
@@ -279,6 +280,23 @@ link_packages() {
   done
 }
 
+# Remove symlinks left pointing into this repo at files or packages that no
+# longer exist (e.g. after a package is deleted or restructured). Only broken
+# links into $DOTFILES_DIR are touched.
+prune_stale_links() {
+  local link target
+
+  while IFS= read -r -d '' link; do
+    target=$(readlink -m -- "$link")
+    [[ $target == "$DOTFILES_DIR"/* ]] || continue
+    say "Removing stale link $link (pointed to ${target#"$DOTFILES_DIR"/})"
+    rm -- "$link"
+  done < <(
+    find "$HOME" -maxdepth 1 -xtype l -print0
+    find "$HOME/.config" "$HOME/.local/bin" -maxdepth 3 -xtype l -print0 2>/dev/null
+  )
+}
+
 ensure_bashrc_source() {
   local bashrc="$HOME/.bashrc"
   touch "$bashrc"
@@ -337,6 +355,7 @@ main() {
 
   install_tools
   sync_inputrc
+  prune_stale_links
   link_packages "${packages[@]}"
   ensure_bashrc_source
   say "Done. Open a new shell or run: exec bash"
