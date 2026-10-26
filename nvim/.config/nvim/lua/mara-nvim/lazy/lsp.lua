@@ -95,7 +95,7 @@ return {
 
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
-					map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+					map("gra", require("mara-nvim.code-action").line, "[G]oto Code [A]ction", { "n", "x" })
 
 					-- Find references for the word under your cursor.
 					map("grr", require("snacks").picker.lsp_references, "[G]oto [R]eferences")
