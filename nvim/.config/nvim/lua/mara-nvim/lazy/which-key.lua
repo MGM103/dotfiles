@@ -42,7 +42,7 @@ return { -- Useful plugin to show you pending keybinds.
 			},
 		},
 		spec = {
-			{ "<leader>c", group = "[C]spell/[C]loak" },
+			{ "<leader>c", group = "[C]odebook/[C]loak" },
 			{ "<leader>g", group = "[G]it utilities" },
 			{ "<leader>s", group = "[S]earch" },
 			{ "<leader>t", group = "[T]est" },
