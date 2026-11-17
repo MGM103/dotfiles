@@ -45,30 +45,34 @@ return {
 		},
 	},
 	{
-		"sindrets/diffview.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		keys = {
-			{ "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview Open" },
-			{ "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "Diffview Close" },
-			{ "<leader>gf", "<cmd>DiffviewFileHistory<cr>", desc = "Diffview File History" },
+		"rashedInt32/lazydiff.nvim",
+		cmd = {
+			"Lazydiff",
+			"LazydiffOff",
+			"LazydiffRefresh",
+			"LazydiffNext",
+			"LazydiffPrev",
+			"LazydiffFirst",
+			"LazydiffReset",
+			"LazydiffYank",
+			"LazydiffFloat",
+			"LazydiffFloatOff",
 		},
-		config = function()
-			require("diffview").setup({
-				enhanced_diff_hl = true, -- Better colors
-				view = {
-					merge_tool = {
-						layout = "diff3_mixed",
-						disable_diagnostics = true,
-					},
-				},
-				file_panel = {
-					listing_style = "tree",
-					win_config = {
-						position = "bottom",
-						height = 10,
-					},
-				},
-			})
-		end,
+		keys = {
+			{ "<leader>gd", "<cmd>Lazydiff<cr>", desc = "Toggle inline diff" },
+			{ "]h", "<cmd>LazydiffNext<cr>", desc = "Next diff hunk" },
+			{ "[h", "<cmd>LazydiffPrev<cr>", desc = "Previous diff hunk" },
+			{ "<leader>gr", "<cmd>LazydiffReset<cr>", desc = "Reset current diff hunk" },
+			{ "<leader>gy", "<cmd>LazydiffYank<cr>", desc = "Yank deleted lines in hunk" },
+		},
+		opts = {
+			ref = "HEAD",
+			read_only = false,
+			word_diff = true,
+			show_hunk_header = true,
+			live_refresh = true,
+			auto_refresh = true,
+			jump_on_enable = true,
+		},
 	},
 }
